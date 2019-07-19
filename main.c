@@ -12,6 +12,9 @@ int main(int ac, char **av, char **env)
 {
     if (ac < 2 || ac > 4 || !env)
         return 84;
-    char **test = parser_entry(av[1]);
+    if (ac == 2)
+        return player_one_entry(av[1]);
+    else
+        return player_two_entry(av[1], av[2]);
     return SUCCESS;
 }
