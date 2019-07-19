@@ -36,10 +36,20 @@ LIB_FLAG		=	lib
 #############################################################################################################
 MAIN_FILE		= 	main.c
 
-SRC_FILES		=	map_parser/parser_entry.c	\
-				map_parser/get_mainstr.c	\
+SRC_FILES		=	player_one_entry.c	\
+				player_two_entry.c	\
+				map_parser/parser_entry.c	\
+				map_parser/map_error_synthax.c	\
+				map_parser/read_map.c	\
+				map_management/create_map.c	\
+				map_management/free_map.c	\
+				map_management/map_handler.c	\
 
-LIB_FILES		=	#my_putstr.c
+
+LIB_FILES		=	my_str_isnum.c	\
+				get_next_line.c	\
+				my_strlen.c	\
+				my_atoi.c	\
 
 TESTS_FILES		=	#test_get_next_line.c
 ####################
