@@ -6,13 +6,22 @@
 */
 
 #include <stddef.h>
-#include "printf.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include "essentials.h"
 #include "map_parser.h"
 
 char **parser_entry(char *map_path)
 {
     char **map = NULL;
-    char *main_str = get_mainstr(map_path);
+    int fd = open(map_path, O_RDONLY);
 
-    my_printf("%s\n", main_str ? main_str : "NULLstr");
+    if (fd == FILE_ERROR || (check_map_error(fd) == ERROR)) {
+        close(fd);
+        return NULL;
+    }
+    if (!(map = read_map(fd))) {
+        close(fd);
+        return NULL;
+    }
 }
