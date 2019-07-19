@@ -14,9 +14,10 @@ static int connect_to_player_one(int ennemy_pid);
 
 int player_two_entry(char *str_pid, char *map_path)
 {
+    char **map = parser_entry(map_path);
     int pid = -1;
 
-    if (my_str_isnum(str_pid) == ERROR)
+    if (!map || my_str_isnum(str_pid) == ERROR)
         return ERROR;
     connect_to_player_one(my_atoi(str_pid));
     return SUCCESS;

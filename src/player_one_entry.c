@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "essentials.h"
+#include "navy.h"
 #include "printf.h"
 
 static int wait_for_player_two(void);
@@ -14,6 +15,10 @@ static void make_connection(int signum, siginfo_t *si, void *ucontext);
 
 int player_one_entry(char *map_path)
 {
+    char **map = parser_entry(map_path);
+
+    if (!map)
+        return ERROR;
     pid_t pid = getpid();
     my_printf("my_pid:  %d\n", pid);
     wait_for_player_two();
