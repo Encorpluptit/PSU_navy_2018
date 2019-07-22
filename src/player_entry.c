@@ -30,6 +30,7 @@ int player_entry(char *str_pid, char *map_path)
         connect_players(&navy, 0u);
     else
         connect_players(&navy, my_atoi(str_pid));
+    
 }
 
 static int connect_players(navy_t *navy, int str_pid)
@@ -41,17 +42,19 @@ static int connect_players(navy_t *navy, int str_pid)
     sigaction(SIGUSR1, &sa, NULL);
     sigaction(SIGUSR2, &sa, NULL);
     while (make_connection(navy->player_id, str_pid) != SUCCESS);
+    navy->enemy_pid = GET_GLOBAL;
+    return SUCCESS;
 }
 
 static void connect(int signum, siginfo_t *si, void *ucontext)
 {
     if (signum == SIGUSR1) {
-        my_printf("successfully connected\n");
+        my_printf("successfully connected\n\n");
         SET_GLOBAL(si->si_pid);
         return;
     }
     if (signum == SIGUSR2) {
-        my_printf("enemy connected\n");
+        my_printf("enemy connected\n\n");
         SET_GLOBAL(si->si_pid);
         return;
     }
@@ -73,62 +76,3 @@ static int make_connection(uint8_t player_id, int str_pid)
     }
     return ERROR;
 }
-//P1
-/*     my_printf("waiting for enemy connection...\n\n"); */
-/*     while (1) { */
-/*         pause(); */
-/*         if ((enemy_pid = GET_GLOBAL)) { */
-/*             kill(enemy_pid, SIGUSR1); */
-/*             break; */
-/*         } */
-/*     } */
-
-//P2
-/*     while (1) { */
-/*         kill(ennemy_pid, SIGUSR2); */
-/*         pause(); */
-/*         if ((enemy_pid = GET_GLOBAL)) { */
-/*             break; */
-/*         } */
-/*     } */
-
-/* static int connect_to_player_one(int ennemy_pid) */
-/* { */
-/*     struct sigaction sa; */
-/*     pid_t enemy_pid = -1; */
-
-/*     sa.sa_sigaction = make_connection; */
-/*     sa.sa_flags = SA_SIGINFO; */
-/* //    sigemptyset(&sa.sa_mask); */
-/*     sigaction(SIGUSR1, &sa, NULL); */
-/*     sigaction(SIGUSR2, &sa, NULL); */
-/*     while (1) { */
-/*         kill(ennemy_pid, SIGUSR2); */
-/*         pause(); */
-/*         if ((enemy_pid = GET_GLOBAL)) { */
-/*             break; */
-/*         } */
-/*     } */
-/*     return enemy_pid; */
-/* } */
-
-/* static int wait_for_player_two(void) */
-/* { */
-/*     struct sigaction sa; */
-/*     pid_t enemy_pid = -1; */
-
-/*     sa.sa_sigaction = make_connection; */
-/*     sa.sa_flags = SA_SIGINFO; */
-/*     sigemptyset(&sa.sa_mask); */
-/*     sigaction(SIGUSR1, &sa, NULL); */
-/*     sigaction(SIGUSR2, &sa, NULL); */
-/*     my_printf("waiting for enemy connection...\n\n"); */
-/*     while (1) { */
-/*         pause(); */
-/*         if ((enemy_pid = GET_GLOBAL)) { */
-/*             kill(enemy_pid, SIGUSR1); */
-/*             break; */
-/*         } */
-/*     } */
-/*     return enemy_pid; */
-/* } */
