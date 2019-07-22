@@ -30,7 +30,6 @@ int player_entry(char *str_pid, char *map_path)
         connect_players(&navy, 0u);
     else
         connect_players(&navy, my_atoi(str_pid));
-    
 }
 
 static int connect_players(navy_t *navy, int str_pid)
