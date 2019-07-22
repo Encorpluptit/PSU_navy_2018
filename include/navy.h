@@ -43,8 +43,17 @@ char **parser_entry(char *map_path);
 int player_entry(char *str_pid, char *map_path);
 
 //<===============================================>
+// global.c.
+int send_info(uint32_t enemy_pid, uint8_t info);
+int receive_info(void);
+
+//<===============================================>
 // create_map.c.
 char **create_map(void);
+
+//<===============================================>
+// free_map.c.
+int free_board(char **map, char **enemy_map, int return_code);
 
 //<===============================================>
 // print_board.c.
