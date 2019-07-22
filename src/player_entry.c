@@ -30,11 +30,16 @@ int player_entry(char *str_pid, char *map_path)
         connect_players(&navy, 0u);
     else
         connect_players(&navy, my_atoi(str_pid));
+
+    /* if (navy.player_id == SIGUSR1) */
+    /*     send_info(navy.enemy_pid, 255); */
+    /* else */
+    /*     my_printf("%d\n", receive_info()); */
 }
 
 static int connect_players(navy_t *navy, int str_pid)
 {
-    struct sigaction sa = (struct sigaction) {.sa_sigaction = connect, .sa_flags = SA_SIGINFO};
+    siga_t sa = (siga_t) {.sa_sigaction = connect, .sa_flags = SA_SIGINFO};
     pid_t enemy_pid = -1;
 
     sigemptyset(&sa.sa_mask);
