@@ -33,7 +33,7 @@
 static const int ERROR = 84;
 static const int NOT_VALID = -42;
 static const int SUCCESS = 0;
-UNUSED static const char *MALLOC_FAILED = NULL;
+UNUSED static const void *MALLOC_FAILED = NULL;
 
 //<===============================================>
 //<===============================================>
