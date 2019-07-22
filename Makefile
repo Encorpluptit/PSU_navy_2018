@@ -36,8 +36,7 @@ LIB_FLAG		=	lib
 #############################################################################################################
 MAIN_FILE		= 	main.c
 
-SRC_FILES		=	player_one_entry.c						\
-				player_two_entry.c						\
+SRC_FILES		=	player_entry.c							\
 				map_parser/parser_entry.c					\
 				map_parser/map_error_synthax.c					\
 				map_parser/read_map.c						\
