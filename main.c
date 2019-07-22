@@ -7,6 +7,12 @@
 
 #include "essentials.h"
 #include "navy.h"
+#include "global.h"
+
+CONSTRUCTOR void constructor(void)
+{
+    RESET_GLOBAL;
+}
 
 int main(int ac, char **av, char **env)
 {
