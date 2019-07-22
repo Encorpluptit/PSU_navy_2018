@@ -39,7 +39,7 @@ int my_atoi(char const * const str);
 char **parser_entry(char *map_path);
 
 //<===============================================>
-// player_one_entry.c.
+// player_entry.c.
 int player_entry(char *str_pid, char *map_path);
 
 //<===============================================>
@@ -47,11 +47,7 @@ int player_entry(char *str_pid, char *map_path);
 char **create_map(void);
 
 //<===============================================>
-// player_one_entry.c.
-int player_one_entry(char *map_path);
-
-//<===============================================>
-// player_two_entry.c.
-int player_two_entry(char *str_pid, char *map_path);
+// print_board.c.
+int print_board(char **map, char **enemy_map);
 
 #endif /* _NAVY_H_ */
