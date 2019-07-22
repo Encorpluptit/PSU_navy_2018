@@ -9,17 +9,22 @@
 #define _GLOBAL_H_
 
 #include <inttypes.h>
+#include <stdbool.h>
 
 typedef enum {
     SET,
-    RETURN,
+    GET,
     RESET,
 } global_flag_t;
 
 int signal_info(uint32_t value, global_flag_t flag);
 
 #define SET_GLOBAL(value) (signal_info(value, SET))
-#define GET_GLOBAL (signal_info(0u, RETURN))
+#define GET_GLOBAL (signal_info(0u, GET))
 #define RESET_GLOBAL (signal_info(0u, RESET))
+
+#define SET_STOP (stop_signal(SET))
+#define GET_STOP (stop_signal(GET))
+#define RESET_STOP (stop_signal(RESET))
 
 #endif /* _GLOBAL_H_ */
