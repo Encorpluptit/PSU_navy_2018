@@ -11,6 +11,8 @@
 #include <inttypes.h>
 #include <stdbool.h>
 
+typedef struct sigaction siga_t;
+
 typedef enum {
     SET,
     GET,
@@ -18,6 +20,7 @@ typedef enum {
 } global_flag_t;
 
 int signal_info(uint32_t value, global_flag_t flag);
+bool stop_signal(global_flag_t flag);
 
 #define SET_GLOBAL(value) (signal_info(value, SET))
 #define GET_GLOBAL (signal_info(0u, GET))
