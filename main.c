@@ -19,8 +19,8 @@ int main(int ac, char **av, char **env)
     if (ac < 2 || ac > 4 || !env)
         return 84;
     if (ac == 2)
-        return player_one_entry(av[1]);
+        return player_entry(NULL, av[1]);
     else
-        return player_two_entry(av[1], av[2]);
+        return player_entry(av[1], av[2]);
     return SUCCESS;
 }
