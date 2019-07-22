@@ -17,6 +17,8 @@
 //<===============================================>
 // Define const and used macro for parser.
 static const uint8_t MAP_SIZE = 8;
+static const char *BOARD_FIRST_LINE = " |ABCDEFGH\n";
+static const char *BOARD_FRAME = "-+--------\n";
 
 #define FILL_BLANK_LINE                         \
     for (uint8_t j = 0; j < MAP_SIZE; ++j)      \
