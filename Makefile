@@ -45,6 +45,9 @@ SRC_FILES		=	player_entry.c							\
 				map_management/map_handler.c					\
 				map_management/print_board.c					\
 				signals/global.c						\
+				signals/communicate.c						\
+
+TSRC_FILES		=	signals/global.c						\
 
 
 LIB_FILES		=	my_str_isnum.c							\
@@ -110,6 +113,9 @@ MAIN			:=	$(MAIN_FILE:.c=.o)
 ####################
 # Setup SRC_FILES path.
 SRC			:=	$(addprefix $(SRC_DIR), $(SRC_FILES))
+####################
+# Setup SRC_FILES path to use in unit tests.
+TSRC			:=	$(addprefix $(SRC_DIR), $(TSRC_FILES))
 ####################
 # Setup rule to transform SRC into OBJ.
 OBJ			:=	$(SRC:.c=.o)
@@ -424,7 +430,7 @@ $(UTESTS_RUN):		fclean BUILD_LIB $(OBJ) $(TESTS_OBJ)
 	@echo -e	"[$(PROJECT)]: LDFLAGS   = $(LDFLAGS)"						| cat
 	@echo -e	"[$(PROJECT)]: LDLIBS    = $(LDLIBS)"						| cat
 	@echo -e	"[$(PROJECT)]: TFLAGS    = $(TFLAGS)"						| cat
-	@$(CC) -o $(TESTS_BIN) $(SRC) $(TESTS_SRC) $(CFLAGS) $(LDFLAGS) $(TFLAGS) $(CPPFLAGS) $(LDLIBS)
+	@$(CC) -o $(TESTS_BIN) $(TSRC) $(TESTS_SRC) $(CFLAGS) $(LDFLAGS) $(TFLAGS) $(CPPFLAGS) $(LDLIBS)
 	@-$(MV) $(TESTS_DIR) test_*.gc*
 
 
