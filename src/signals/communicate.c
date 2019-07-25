@@ -14,8 +14,7 @@ static void catch_signal(int signum);
 
 int send_info(uint32_t enemy_pid, uint8_t info)
 {
-    if (!info)
-        return (my_printf("error in send_info fct (nothing to send)\n"));
+    usleep(500);
     for (; info; --info) {
         usleep(500);
         kill(enemy_pid, SIGUSR1);
@@ -26,7 +25,7 @@ int send_info(uint32_t enemy_pid, uint8_t info)
 
 int receive_info(void)
 {
-    siga_t sa = (siga_t) {.sa_sigaction = catch_signal};
+    siga_t sa = (siga_t) {.sa_handler = catch_signal};
 
     RESET_STOP;
     RESET_GLOBAL;
