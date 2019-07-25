@@ -23,7 +23,7 @@ char **read_map(int fd)
     if (!map)
         return NULL;
     lseek(fd, 0u, SEEK_SET);
-    while (line = get_next_line(fd)) {
+    while ((line = get_next_line(fd))) {
         map = fill_map(map, line);
         free(line);
         if (!map)
