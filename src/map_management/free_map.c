@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include "essentials.h"
+#include "navy.h"
 #include "map_management.h"
 #include "printf.h"
 
@@ -27,9 +28,11 @@ int free_board(char **map, char **enemy_map, int return_code)
 
     if (!return_code)
         my_printf("I won\n");
-    else if (return_code == 1)
+    if (return_code == 1)
         my_printf("Enemy won\n");
-    else
+    if (return_code == QUIT)
+        my_printf("Exit game\n");
+    if (return_code == ERROR)
         my_printf("%e\n", "ERROR");
     return return_code;
 }
