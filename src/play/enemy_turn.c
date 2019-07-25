@@ -21,10 +21,10 @@ uint8_t enemy_turn(navy_t *navy, game_t *game)
     if (navy->player_id == SIGUSR2)
         print_board(navy->map, navy->enemy_map);
     my_printf("waiting for enemy's attack...\n");
-    if (receive_info() == STOP_GAME) {
+    if (receive_info() == QUIT) {
         game->play = false;
         print_board(navy->map, navy->enemy_map);
-        return ERROR;
+        return QUIT;
     }
     pos = wait_for_enemy();
     if (check_hit(pos, navy->map))
@@ -32,6 +32,7 @@ uint8_t enemy_turn(navy_t *navy, game_t *game)
     else
         send_info(navy->enemy_pid, MISSED);
     game->turn = true;
+    usleep(2000);
     return game->win;
 }
 
@@ -58,6 +59,7 @@ static bool check_hit(pos_t pos, char **map)
         my_printf("%c%c:  %s\n", LETTER(pos.col), NUMBER(pos.line), "hit\n");
         return true;
     }
+    usleep(500);
 }
 
 static int check_map(navy_t *navy, game_t *game)
