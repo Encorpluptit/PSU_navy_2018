@@ -14,27 +14,24 @@
 static int connect_players(navy_t *navy, int str_pid);
 static void connect(int signum, siginfo_t *si, void *ucontext);
 static int make_connection(uint8_t player_id, int str_pid);
+static navy_t fill_navy_struct(char *str_pid, char *map_path, pid_t pid);
 
 int player_entry(char *str_pid, char *map_path)
 {
     pid_t pid = getpid();
     int enemy_pid = -1;
-    navy_t navy = (navy_t) {.map = parser_entry(map_path), .pid = pid,
-    .enemy_map = create_map(), .player_id = (!str_pid) ? SIGUSR1 : SIGUSR2};
+    navy_t navy = fill_navy_struct(str_pid, map_path, pid);
 
     if (!(navy.map) || !(navy.enemy_map) ||
         (str_pid && (my_str_isnum(str_pid) == ERROR)))
-        return ERROR; //return free;
+        return free_board(navy.map, navy.enemy_map, 84);
     my_printf("my_pid:  %d\n", pid);
     if (navy.player_id == SIGUSR1)
         connect_players(&navy, 0u);
     else
         connect_players(&navy, my_atoi(str_pid));
 
-    /* if (navy.player_id == SIGUSR1) */
-    /*     send_info(navy.enemy_pid, 255); */
-    /* else */
-    /*     my_printf("%d\n", receive_info()); */
+    return play_navy(&navy);
 }
 
 static int connect_players(navy_t *navy, int str_pid)
@@ -79,4 +76,15 @@ static int make_connection(uint8_t player_id, int str_pid)
         return SUCCESS;
     }
     return ERROR;
+}
+
+static navy_t fill_navy_struct(char *str_pid, char *map_path, pid_t pid)
+{
+    navy_t navy;
+
+    navy.map = parser_entry(map_path);
+    navy.pid = pid;
+    navy.enemy_map = create_map();
+    navy.player_id = (!str_pid) ? SIGUSR1 : SIGUSR2;
+    return (navy);
 }
