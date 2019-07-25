@@ -10,7 +10,7 @@
 #include "map_parser.h"
 
 static int check_line(char *str, uint8_t index);
-static int check_boats(char *line, int index);
+static int check_boats(char *line);
 
 int check_map_error(int fd)
 {
@@ -42,10 +42,10 @@ static int check_line(char *line, uint8_t index)
         return ERROR;
     if (!(CASE_NB(line[3])) || !(CASE_NB(line[6])))
         return ERROR;
-    return (check_boats(line, index));
+    return (check_boats(line));
 }
 
-static int check_boats(char *line, int index)
+static int check_boats(char *line)
 {
     if (line[2] == line[5]) {
         if (ABS(line[6] - line[3]) + 1 != line[0] - '0')
