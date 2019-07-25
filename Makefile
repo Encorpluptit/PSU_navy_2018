@@ -51,6 +51,11 @@ SRC_FILES		=	player_entry.c							\
 				signals/communicate.c						\
 
 TSRC_FILES		=	signals/global.c						\
+				map_parser/parser_entry.c					\
+				map_parser/read_map.c						\
+				map_parser/map_error_synthax.c					\
+				map_management/create_map.c					\
+				map_management/free_map.c					\
 
 
 LIB_FILES		=	my_str_isnum.c							\
@@ -58,7 +63,11 @@ LIB_FILES		=	my_str_isnum.c							\
 				my_strlen.c							\
 				my_atoi.c							\
 
-TESTS_FILES		=	#test_get_next_line.c
+TESTS_FILES		=	wrap_malloc.c							\
+				printf.c							\
+				test_global.c							\
+				test_parser.c							\
+
 ####################
 # WRAPED_MALLOC
 N_MALLOC_FILE		=	wrap_norm_malloc.c
@@ -250,28 +259,15 @@ GDB_FLAG		+=	-g
 #TESTS_DEFINE		+=	-D_TESTS_RUN_
 TESTS_LDLIBS		+=	-lcriterion
 TESTS_FLAGS		+=	--coverage
-TFLAGS			+=	$(TESTS_DEFINE) $(TESTS_LDLIBS) $(TESTS_FLAGS)
+WRAP_MALLOC		+=	-Wl,--wrap=malloc
+TFLAGS			+=	$(TESTS_DEFINE) $(TESTS_LDLIBS) $(TESTS_FLAGS) $(WRAP_MALLOC)
 ####################
 # Setup WRAP_MALLOC.
-# Uncomment WRAP TO USE
-NORM_WRAP		=	FALSE
-REAL_WRAP		=	FALSE
-WR_MALLOC   		=	-Wl,--wrap=malloc
-WN_MALLOC   		=	-DWRAP
 WRAPPERS		=
-ifeq ($(NORM_WRAP), TRUE)
-    WRAPPERS		+=	$(WN_MALLOC)
-    TESTS_WRAP_SRC	+=	$(TESTS_WRAP_NORM)
-    $(info <===== $(PROJECT) Makefile config: Using NORM_WRAP  =====>)
-    $(info <===== $(PROJECT) WRAP_FLAGS = $(WN_MALLOC) =====> )
-    $(info <===== $(PROJECT) WRAP_FILE = $(TESTS_WRAP_SRC) =====> )
-endif
-ifeq ($(REAL_WRAP), TRUE)
+ifeq ($(WRAP_MALLOC), TRUE)
     WRAPPERS		+=	$(WR_MALLOC)
-    TESTS_WRAP_SRC	+=	$(TESTS_WRAP_REAL)
-    $(info <===== $(PROJECT) Makefile config: Using REAL_WRAP  =====>)
-    $(info <===== $(PROJECT) WRAP_FLAGS = $(WR_MALLOC) =====> )
-    $(info <===== $(PROJECT) WRAP_FILE = $(TESTS_WRAP_SRC) =====> )
+    $(info <===== $(PROJECT) Makefile config: Using WRAP_MALLOC  =====>)
+    $(info <===== $(PROJECT) WRAP_FLAGS = $(WRAP_MALLOC) =====> )
 endif
 ####################
 # Setup FLAGS for execute Criterion binary.
