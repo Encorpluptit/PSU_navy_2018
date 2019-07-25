@@ -68,11 +68,6 @@ TESTS_FILES		=	wrap_malloc.c							\
 				test_global.c							\
 				test_parser.c							\
 
-####################
-# WRAPED_MALLOC
-N_MALLOC_FILE		=	wrap_norm_malloc.c
-
-R_MALLOC_FILE		=	wrap_real_malloc.c
 #############################################################################################################
 
 
@@ -106,11 +101,6 @@ TESTS_RESSOURCES_FOLDER	=	ressources
 TESTS_DIR		=	$(addprefix $(PROJECT_DIR), $(addsuffix /, $(TESTS_FOLDER)))
 TESTS_SRC_DIR		=	$(addprefix $(TESTS_DIR), $(addsuffix /, $(TESTS_SRC_FOLDER)))
 TESTS_INCLUDE_DIR	=	$(addprefix $(TESTS_DIR), $(addsuffix /, $(TESTS_INCLUDE_FOLDER)))
-####################
-# Setup WRAPED_MALLOC_ TESTS file.
-TESTS_WRAP_FOLDER	=	$(addprefix $(TESTS_DIR), $(addsuffix /, $(TESTS_RESSOURCES_FOLDER)))
-TESTS_WRAP_REAL		=	$(addprefix $(TESTS_WRAP_FOLDER), $(R_MALLOC_FILE))
-TESTS_WRAP_NORM		=	$(addprefix $(TESTS_WRAP_FOLDER), $(N_MALLOC_FILE))
 #############################################################################################################
 
 
@@ -182,7 +172,7 @@ UTESTS_RUN		=	tests_run
 TESTS_BIN		=	unit_tests
 ####################
 # Setup WRAP_MALLOC RULE.
-WRAP_MALLOC_RUN		=	wrap_run
+WRAP_MALLOC		=	TRUE
 ####################
 # Setup FUNCTIONNALS_TESTS RULE name and FUNCTIONNALS_TESTS script name.
 #FTESTS_RUN		=	ftests_run
@@ -259,15 +249,17 @@ GDB_FLAG		+=	-g
 #TESTS_DEFINE		+=	-D_TESTS_RUN_
 TESTS_LDLIBS		+=	-lcriterion
 TESTS_FLAGS		+=	--coverage
-WRAP_MALLOC		+=	-Wl,--wrap=malloc
-TFLAGS			+=	$(TESTS_DEFINE) $(TESTS_LDLIBS) $(TESTS_FLAGS) $(WRAP_MALLOC)
+WRAP_MALLOC_FLAGS	=	-Wl,--wrap=malloc
+ifeq ($(WRAP_MALLOC), TRUE)
+	TESTS_FLAGS		+=	$(WRAP_MALLOC_FLAGS)
+endif
+TFLAGS			+=	$(TESTS_DEFINE) $(TESTS_LDLIBS) $(TESTS_FLAGS)
 ####################
 # Setup WRAP_MALLOC.
 WRAPPERS		=
 ifeq ($(WRAP_MALLOC), TRUE)
-    WRAPPERS		+=	$(WR_MALLOC)
     $(info <===== $(PROJECT) Makefile config: Using WRAP_MALLOC  =====>)
-    $(info <===== $(PROJECT) WRAP_FLAGS = $(WRAP_MALLOC) =====> )
+    $(info <===== $(PROJECT) WRAP_FLAGS = $(WRAP_MALLOC_FLAGS) =====> )
 endif
 ####################
 # Setup FLAGS for execute Criterion binary.
@@ -456,70 +448,7 @@ $(UTESTS_RUN):		fclean BUILD_LIB $(OBJ) $(TESTS_OBJ)
 
 
 
-#=============================#
-# ==   Wrap_Malloc Rule    == #
-#=============================#
-#############################################################################################################
-.PHONY: $(WRAP_MALLOC_RUN)
-$(WRAP_MALLOC_RUN):		CPPFLAGS	+=	$(TESTS_INCLUDES)
-$(WRAP_MALLOC_RUN):		fclean BUILD_LIB $(OBJ) $(TESTS_OBJ)
-	@echo -e	"\n\n"$(FRAME_W)
-	@echo -e	"\t\t\t"$(RED_BG)"USING MALLOC WRAPPERS !!!!"$(END)
-	@echo -e	$(FRAME_W)"\n\n"
-	@echo -e	"\n\n"$(FRAME_D)								| cat
-	@echo -e	$(GREEN_BG)"[$(PROJECT)]: Testing project"$(END)				| cat
-	@echo -e	$(FRAME_D)									| cat
-	@echo -e	$(TITLE)"[$(PROJECT)]: Building with following options (ordered):"$(END)	| cat
-	@echo -e	"[$(PROJECT)]: CC        = $(CC)"						| cat
-	@echo -e	"[$(PROJECT)]: SRC       = $(SRC)"						| cat
-	@echo -e	"[$(PROJECT)]: TESTS_SRC = $(TESTS_SRC)"					| cat
-	@echo -e	"[$(PROJECT)]: CFLAGS    = $(CFLAGS)"						| cat
-	@echo -e	"[$(PROJECT)]: CPPFLAGS  = $(CPPFLAGS)"						| cat
-	@echo -e	"[$(PROJECT)]: LDFLAGS   = $(LDFLAGS)"						| cat
-	@echo -e	"[$(PROJECT)]: LDLIBS    = $(LDLIBS)"						| cat
-	@echo -e	"[$(PROJECT)]: TFLAGS    = $(TFLAGS)"						| cat
 
-
-####################
-# Launching unit tests without using wrapped malloc.
-	@$(CC) -o $(TESTS_BIN) $(SRC) $(TESTS_SRC) $(CFLAGS) $(LDFLAGS) $(CPPFLAGS) $(TFLAGS) $(LDLIBS)
-	@echo -e	$(UL)"\n\n[$(PROJECT)]: Starting UNIT_TESTS binary."$(END)			| cat
-	@echo -e	"[$(PROJECT)]: TRUNFLAGS  = $(TRUNFLAGS)\n"					| cat
-	@-./$(TESTS_BIN) $(TRUNFLAGS)
-	@-rename .gcda _wrap.gcda *.gcda
-	@-rename .gcno _wrap.gcno *.gcno
-	@-$(RM)   $(TESTS_BIN)
-	@echo -e	"\n\n[$(PROJECT)]: Moving test sources coverage files into $(TESTS_FOLDER)"	| cat
-	@-$(MV) $(TESTS_DIR) test_*.gc*
-
-
-####################
-# Launching unit tests using wrapped malloc.
-	@echo -e	$(TITLE)"\n\n\n[$(PROJECT)]: Wrapping malloc with : $(WRAPPERS)"$(END)		| cat
-	@echo -e	"\n\n\n[$(PROJECT)]: Wrapping malloc with : $(TESTS_WRAP_SRC)"			| cat
-	@$(CC) -o $(TESTS_BIN) $(SRC) $(TESTS_WRAP_SRC) $(WRAPPERS) $(LDFLAGS) $(CPPFLAGS) $(TFLAGS) $(LDLIBS)
-	@echo -e	$(UL)"[$(PROJECT)]: Starting WRAPED UNIT_TESTS binary."$(END)		| cat
-	@echo -e	"[$(PROJECT)]: TRUNFLAGS  = $(TRUNFLAGS)\n"					| cat
-	@./$(TESTS_BIN) $(TRUNFLAGS)
-	@echo -e	"\n\n[$(PROJECT)]: Moving wraped test sources coverage files into $(TESTS_FOLDER)"
-	@-$(MV) $(TESTS_DIR) wrap_*.gc*
-
-
-####################
-# Launching gcovr report.
-	@echo -e	"[$(PROJECT)]: Gcovr Flags = $(GCOVFLAGS)"					| cat
-	@echo -e	"\n\n"$(FRAME_D)								| cat
-	@echo -e	$(RED_BG)"\t\t[$(PROJECT)]: Complete coverage report"$(END)			| cat
-	@echo -e	"\e[1m\e[36m\n\t\t\t  $(LC_FRAME)"						| cat
-	@echo -e	"\t\t\t  $(LINE_COV)"								| cat
-	@-echo -e	"\t\t\t  $(LC_FRAME)\e[0m"							| cat
-	@$(GCOV) -r . $(GCOVFLAGS)
-	@echo -e	"\e[1m\e[36m\n\n\t\t\t  $(BC_FRAME)"						| cat
-	@echo -e	"\t\t\t  $(BRANCH_COV)"								| cat
-	@echo -e	"\t\t\t  $(BC_FRAME)\e[0m"							| cat
-	@$(GCOV) -b . $(GCOVFLAGS)
-	@echo -e	$(RED_BG)"\t\t  ------------ $(PROJECT) ------------  "$(END)			| cat
-#############################################################################################################
 
 #=====================================#
 # ==    FUNCTIONNALS TESTS  Rule   == #
@@ -527,6 +456,9 @@ $(WRAP_MALLOC_RUN):		fclean BUILD_LIB $(OBJ) $(TESTS_OBJ)
 #############################################################################################################
 
 #############################################################################################################
+
+
+
 
 
 #					 #############################
