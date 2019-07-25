@@ -21,8 +21,9 @@ char **create_map(void)
         if (!(*(map + i))) {
             free_map(map);
             return NULL;
-        } else
+        } else {
             FILL_BLANK_LINE;
+        }
     }
     *(map + MAP_SIZE) = NULL;
     return map;
