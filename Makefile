@@ -44,6 +44,9 @@ SRC_FILES		=	player_entry.c							\
 				map_management/free_map.c					\
 				map_management/map_handler.c					\
 				map_management/print_board.c					\
+				play/play_navy.c						\
+				play/player_turn.c						\
+				play/enemy_turn.c						\
 				signals/global.c						\
 				signals/communicate.c						\
 
