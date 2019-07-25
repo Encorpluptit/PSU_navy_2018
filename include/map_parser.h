@@ -41,6 +41,10 @@ int free_map(char **map);
 char **create_map(void);
 
 //<===============================================>
+// parser_entry.c.
+char **parser_entry(char *map_path);
+
+//<===============================================>
 // map_error_synthax.c prototypes.
 int check_map_error(int fd);
 
