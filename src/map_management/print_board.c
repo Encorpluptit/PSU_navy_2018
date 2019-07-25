@@ -13,9 +13,9 @@ static int print_map(char **map);
 
 int print_board(char **map, char **enemy_map)
 {
-    my_printf("my postions:\n");
+    my_printf("my positions:\n");
     print_map(map);
-    my_printf("\nenemy's positions:\n");
+    my_printf("enemy's positions:\n");
     print_map(enemy_map);
     return SUCCESS;
 }
@@ -28,4 +28,5 @@ static int print_map(char **map)
         my_printf("%u|", i + 1);
         my_printf("%s\n", *(map + i));
     }
+    my_printf("\n");
 }
