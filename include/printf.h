@@ -5,28 +5,10 @@
 ** header for printf_lib
 */
 
-//<===============================================>
-// Essentials Defines.
-#ifndef UNUSED
-#define UNUSED __attribute__ ((unused))
-#endif /* UNUSED */
-
-#ifndef HIDDEN
-#define HIDDEN __attribute__ ((visibility ("hidden")))
-#endif /* HIDDEN */
-
-
-#ifndef DESTRUCTOR
-#define DESTRUCTOR __attribute__((destructor))
-#endif /* DESTRUCTOR */
-
-#ifndef CONSTRUCTOR
-#define CONSTRUCTOR __attribute__((constructor))
-#endif /* CONSTRUCTOR */
-
 #ifndef _PRINTF_
 #define _PRINTF_
 
+//<===============================================>
 //<===============================================>
 // Necessary Header Inclusion.
 #include <stdarg.h>
@@ -34,13 +16,16 @@
 #include <unistd.h>
 
 //<===============================================>
+//<===============================================>
 // Printf flag functions.
 static inline size_t printf_int(va_list list);
 static inline size_t printf_percent(va_list list);
 static inline size_t printf_char(va_list list);
 static inline size_t printf_str(va_list list);
 static inline size_t printf_uint(va_list list);
+static inline size_t printf_str_err(va_list argv_list);
 
+//<===============================================>
 //<===============================================>
 // Library (trivial) Functions Prototypes (definition is below).
 static inline size_t my_print_strlen(char const *str);
@@ -51,6 +36,7 @@ static inline size_t my_put_nbr(long long nb);
 static inline size_t my_put_nbr_base(unsigned int nb, char const *base);
 static inline size_t printf_word_array(va_list argv_list);
 
+//<===============================================>
 //<===============================================>
 // Associative Array.
 typedef struct printf_array_s {
@@ -65,6 +51,7 @@ static const printf_array_t printf_array[] = {
     {'%', printf_percent},
     {'c', printf_char},
     {'s', printf_str},
+    {'e', printf_str_err},
     {'w', printf_word_array}
 };
 
@@ -81,6 +68,7 @@ static inline size_t check_flag(va_list argv_list, char const flag)
     return printed;
 }
 
+//<===============================================>
 //<===============================================>
 // Printf flag functions.
 static inline size_t printf_int(va_list argv_list)
@@ -109,6 +97,12 @@ static inline size_t printf_char(va_list argv_list)
 static inline size_t printf_str(va_list argv_list)
 {
     size_t char_printed = my_putstr(va_arg(argv_list, char *));
+    return (char_printed);
+}
+
+static inline size_t printf_str_err(va_list argv_list)
+{
+    size_t char_printed = my_putstr_err(va_arg(argv_list, char *));
     return (char_printed);
 }
 
@@ -143,6 +137,7 @@ static inline size_t my_printf(char const *str, ...)
     return printed;
 }
 
+//<===============================================>
 //<===============================================>
 // Library (trivial) Functions Definitions.
 static inline size_t my_putchar(char c)
