@@ -24,4 +24,5 @@ char **parser_entry(char *map_path)
         close(fd);
         return NULL;
     }
+    return map;
 }
