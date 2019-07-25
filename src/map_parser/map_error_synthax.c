@@ -16,7 +16,7 @@ int check_map_error(int fd)
 {
     char *line = NULL;
 
-    for (uint8_t i = 2; i <= 5 ; ++i) {
+    for (uint8_t i = 2; i <= 5; ++i) {
         if (!(line = get_next_line(fd)))
             return ERROR;
         else if ((my_strlen(line) != 7) || check_line(line, i) == ERROR) {
