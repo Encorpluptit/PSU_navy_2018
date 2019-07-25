@@ -31,9 +31,6 @@ uint8_t enemy_turn(navy_t *navy, game_t *game)
         check_map(navy, game);
     else
         send_info(navy->enemy_pid, MISSED);
-//    game->play = false;
-
-//    usleep(100000);
     game->turn = true;
     return game->win;
 }
@@ -55,6 +52,7 @@ static bool check_hit(pos_t pos, char **map)
         return false;
     } else if (map[pos.line][pos.col] == 'x') {
         my_printf("%c%c:  %s\n", LETTER(pos.col), NUMBER(pos.line), "missed\n");
+        return false;
     } else {
         map[pos.line][pos.col] = 'x';
         my_printf("%c%c:  %s\n", LETTER(pos.col), NUMBER(pos.line), "hit\n");
