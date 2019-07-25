@@ -12,10 +12,22 @@
 //<===============================================>
 // Necessary includes.
 #include <inttypes.h>
+#include <stdbool.h>
 
 //<===============================================>
 //<===============================================>
-// navy stucture.
+// navy stuctures.
+
+typedef struct game_s {
+    uint8_t turn : 1;
+    uint8_t play : 1;
+    uint8_t win : 1;
+} game_t;
+
+typedef struct pos_s {
+    uint8_t line;
+    uint8_t col;
+} pos_t;
 
 typedef struct navy_s {
     char **map;
@@ -25,6 +37,22 @@ typedef struct navy_s {
     uint8_t player_id;
 } navy_t;
 
+typedef enum {
+    MISSED,
+    HIT,
+    STOP_GAME
+} hit_t;
+
+//<===============================================>
+//<===============================================>
+// Maccro for lulz.
+#define LETTER(x) (x + 'A')
+#define NUMBER(x) (x + '1')
+#define COUNT(x) (x >= '2' && x <= '5')
+
+#define IS_LETTER(x) (x >= 'A' && x <= 'H')
+#define IS_NUMBER(x) (x >= '1' && x <= '8')
+
 //<===============================================>
 //<===============================================>
 // Project functions prototypes.
@@ -32,7 +60,9 @@ typedef struct navy_s {
 //<===============================================>
 // LIB prototypes.
 int my_str_isnum(char const *str);
+size_t my_strlen(char const *str);
 int my_atoi(char const * const str);
+char *get_next_line(int fd);
 
 //<===============================================>
 // map_parser folder.
@@ -50,6 +80,18 @@ int receive_info(void);
 //<===============================================>
 // create_map.c.
 char **create_map(void);
+
+//<===============================================>
+// play_navy.c.
+int play_navy(navy_t *navy);
+
+//<===============================================>
+// player_turn.c.
+uint8_t player_turn(navy_t *navy, game_t *game);
+
+//<===============================================>
+// player_turn.c.
+uint8_t enemy_turn(navy_t *navy, game_t *game);
 
 //<===============================================>
 // free_map.c.
