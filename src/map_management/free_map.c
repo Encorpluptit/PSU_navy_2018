@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include "essentials.h"
 #include "map_management.h"
+#include "printf.h"
 
 int free_map(char **map)
 {
@@ -21,7 +22,14 @@ int free_map(char **map)
 
 int free_board(char **map, char **enemy_map, int return_code)
 {
-    free(map);
-    free(enemy_map);
+    free_map(map);
+    free_map(enemy_map);
+
+    if (!return_code)
+        my_printf("I won\n");
+    else if (return_code == 1)
+        my_printf("Enemy won\n");
+    else
+        my_printf("%e\n", "ERROR");
     return return_code;
 }
