@@ -104,7 +104,7 @@ uint8_t player_turn(navy_t *navy, game_t *game)
         print_board(navy->map, navy->enemy_map);
     usleep(2000);
     static int turn = 0;
-    if (test(navy, game,turn) != ERROR) {
+    if (test(navy, game, turn) != ERROR) {
         turn += 1;
     }
     else {
