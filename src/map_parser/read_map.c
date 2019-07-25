@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** NAvy.
 ** File description:
-** Transform file with boat position into double tab with graphic representation.
+** Transform file with boat position into double tab.
 */
 
 #include <stdlib.h>
