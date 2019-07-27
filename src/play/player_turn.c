@@ -80,7 +80,7 @@ static bool check_user_synthax(char *input)
     if (!input)
         return false;
     if (my_strlen(input) != 2) {
-        my_printf("wrong position str\n");
+        my_printf("wrong position\n");
         return false;
     }
     if (IS_LETTER(*input) && IS_NUMBER(*(input + 1)))
