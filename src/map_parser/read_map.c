@@ -11,7 +11,7 @@
 #include "map_management.h"
 #include "map_parser.h"
 
-static char **fill_map(char **map, char *line);
+char **fill_map(char **map, char *line);
 static char **fill_line(char **map, char *line);
 static char **fill_column(char **map, char *line);
 
@@ -32,7 +32,7 @@ char **read_map(int fd)
     return map;
 }
 
-static char **fill_map(char **map, char *line)
+char **fill_map(char **map, char *line)
 {
     if (line[2] == line[5]) {
         if (!(map = fill_line(map, line)))
@@ -48,11 +48,11 @@ static char **fill_map(char **map, char *line)
 static char **fill_line(char **map, char *line)
 {
     for (uint8_t i = NB_TO_INDEX(line[3]); i <= NB_TO_INDEX(line[6]); ++i) {
-        if (map[CHAR_TO_INDEX(line[2])][i] != '.') {
+        if (map[i][CHAR_TO_INDEX(line[2])] != '.') {
             free_map(map);
             return NULL;
         }
-        map[CHAR_TO_INDEX(line[2])][i] = line[0];
+        map[i][CHAR_TO_INDEX(line[2])] = line[0];
     }
     return map;
 }
@@ -60,11 +60,11 @@ static char **fill_line(char **map, char *line)
 static char **fill_column(char **map, char *line)
 {
     for (uint8_t i = CHAR_TO_INDEX(line[2]); i <= CHAR_TO_INDEX(line[5]); ++i) {
-        if (map[i][NB_TO_INDEX(line[3])] != '.') {
+        if (map[NB_TO_INDEX(line[3])][i] != '.') {
             free_map(map);
             return NULL;
         }
-        map[i][NB_TO_INDEX(line[3])] = line[0];
+        map[NB_TO_INDEX(line[3])][i] = line[0];
     }
     return map;
 }
