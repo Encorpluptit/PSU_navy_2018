@@ -65,7 +65,9 @@ int test(navy_t *navy, game_t *game, int turn)
         col = 0;
         line ++;
     }
-    if (line >= 7 && col >= 6) {
+    if (line >= 7 && col == 1)
+        col += 1;
+    if (line > 7) {
         stop++;
         col = 0;
         line = 0;
