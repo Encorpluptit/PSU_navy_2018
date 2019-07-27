@@ -9,8 +9,6 @@
 #include "navy.h"
 #include "map_parser.h"
 
-char **fill_map(char **map, char *line);
-
 Test(parser_entry_wrong_path, test1)
 {
     char **map = parser_entry("lol");
@@ -195,6 +193,14 @@ Test(parser_entry_superposition, test1)
     free_map(map);
 }
 
+Test(parser_entry_superposition, test2)
+{
+    char **map = parser_entry("tests/ressources/superpostion2");
+
+    cr_assert_null(map);
+    free_map(map);
+}
+
 Test(parser_entry_easy_map, test1)
 {
     char **map = parser_entry("tests/ressources/easy_map");
@@ -243,12 +249,12 @@ Test(free_board, test_5, .init = redirect_all_std)
     free_board(map, enemy_map, 84);
 }
 
-Test(fill_line_error_in_create_map, test1)
-{
-    char **map = create_map();
+/* Test(fill_line_error_in_create_map, test1) */
+/* { */
+/*     char **map = create_map(); */
 
-    map[0][2] = 'p';
-    map = fill_map(map, "2:C1:C2");
-    cr_assert_null(map, "%s", map[0]);
-    free_map(map);
-}
+/*     map[0][2] = 'p'; */
+/*     map = fill_map(map, "2:C1:C2"); */
+/*     cr_assert_null(map, "%s", map[0]); */
+/*     free_map(map); */
+/* } */

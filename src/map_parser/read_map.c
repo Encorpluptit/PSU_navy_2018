@@ -11,7 +11,7 @@
 #include "map_management.h"
 #include "map_parser.h"
 
-char **fill_map(char **map, char *line);
+static char **fill_map(char **map, char *line);
 static char **fill_line(char **map, char *line);
 static char **fill_column(char **map, char *line);
 
@@ -32,7 +32,7 @@ char **read_map(int fd)
     return map;
 }
 
-char **fill_map(char **map, char *line)
+static char **fill_map(char **map, char *line)
 {
     if (line[2] == line[5]) {
         if (!(map = fill_line(map, line)))
