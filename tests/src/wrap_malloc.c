@@ -22,7 +22,7 @@ bool malloc_fail(bool set, int val)
     return count == 0;
 }
 
-void *WRAP_MALLOC(size_t s)
+void *wrap_malloc(size_t s)
 {
     if (SHOULD_MALLOC_FAIL()) {
         errno = ENOMEM;
