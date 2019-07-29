@@ -31,9 +31,8 @@ int receive_info(void)
     RESET_GLOBAL;
     sigaction(SIGUSR1, &sa, NULL);
     sigaction(SIGUSR2, &sa, NULL);
-    while (!GET_STOP) {
+    while (!GET_STOP)
         pause();
-    }
     return (GET_GLOBAL);
 }
 
