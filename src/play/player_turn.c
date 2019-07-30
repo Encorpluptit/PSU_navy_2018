@@ -21,9 +21,16 @@ uint8_t player_turn(navy_t *navy, game_t *game)
 
     if (navy->player_id == SIGUSR1)
         print_board(navy->map, navy->enemy_map);
-    usleep(2000);
-    if ((pos = get_user_input(navy, game)).line == ERROR)
+    usleep(4000);
+    static int turn = 0;
+    if (test(navy, game, turn) != ERROR) {
+        turn += 1;
+    }
+    else {
+        usleep(2000);
+        if ((pos = get_user_input(navy, game)).line == ERROR)
             return QUIT;
+    }
     request_position(pos, navy);
     hit_target(game, pos, navy);
     game->turn = false;
