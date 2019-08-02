@@ -25,7 +25,6 @@ int free_board(char **map, char **enemy_map, int return_code)
 {
     free_map(map);
     free_map(enemy_map);
-
     if (!return_code)
         my_printf("I won\n");
     if (return_code == 1)

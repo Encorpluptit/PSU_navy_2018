@@ -42,7 +42,6 @@ SRC_FILES		=	player_entry.c							\
 				map_parser/read_map.c						\
 				map_management/create_map.c					\
 				map_management/free_map.c					\
-				map_management/map_handler.c					\
 				map_management/print_board.c					\
 				play/play_navy.c						\
 				play/player_turn.c						\
